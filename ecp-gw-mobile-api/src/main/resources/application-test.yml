@@ -1,0 +1,83 @@
+server:
+  port: 9999
+spring:
+  app:
+    domain: whee.net.id
+    protocol: http
+    baseUrl: ${spring.app.protocol}://${spring.app.domain}:${server.port}
+  application:
+    name: ECP-MOBILEAPI
+    home: /Users/adinugraha/Workspace/me/github/test/ecp-gw-mobile-api
+#Database / Hibernate / JPA
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecpTest?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root@mysql
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    driver: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    show-sql: true
+#FeignClients
+ribbon:
+  eureka:
+    enabled: false
+ecp-ms-auth:
+  name: ecp-ms-auth
+  path: /${ecp-ms-auth.name}
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: http://127.0.0.1:19100
+feign:
+  hystrix:
+    enabled: true
+#Security
+security:
+  basic:
+    realm: WheeHQ
+  oauth2:
+    resource:
+      id: whee-mapi-gw
+      token-info-uri: http://localhost:19100/whee-ms-auth/oauth/check_token
+      filter-order: 3
+messages:
+  path: ${spring.application.home}/conf/messages
+
+public:
+  account:
+    activation:
+      link: ${spring.app.baseUrl}/activate/public/activate
+change:
+  password:
+    link: ${spring.app.domain}/activate/change_password
+business:
+  app:
+    url:
+      protocol: ${spring.app.protocol}
+      baseUrl: ${spring.app.domain}/login
+#Token
+tokenExpirationTime: 120
+refreshTokenExpTime: 120
+tokenIssuer: ${spring.app.baseUrl}
+tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+expired:
+  store:
+    num-days: -14
+# Logging
+logging:
+#  path: ${spring.application.home}/log
+#  file: ${logging.path}/mobile-api.log
+  level:
+    ROOT: INFO
+    com:
+      pst:
+        whee: DEBUG
+    org:
+      springframework:
+        web: INFO
+        security: INFO
+        cloud: INFO
+      hibernate: INFO

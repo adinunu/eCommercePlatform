@@ -1,0 +1,4 @@
+#!/bin/bash
+PROFILES="$1"
+
+./mvnw spring-boot:run -Drun.profiles=$PROFILES -Dapp.name=WHEE-POS-RESTFUL

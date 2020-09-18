@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: ecp-ms-auth
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecpTest?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root@mysql
+    driver-class-name: com.mysql.jdbc.Driver
+    sql-script-encoding: UTF-8
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+security:
+  basic:
+    enabled: false
+  oauth2:
+    resource:
+      id: ${spring.application.name}-oauth-resource
+      filter-order: 3
+      jwt:
+        key-value: 45df8afa60749b00112903eb249823d8fd57fe15ff67ceb54c2cd0d782826d9e
+      token-info-uri: http://localhost:19100/ecp-ms-auth/oauth/check_token
+
+server:
+  context-path: /${spring.application.name}
+  port: 19100
+### LOGGING
+logging:
+  path: /Users/adinugraha/log
+  file: /${logging.path}/${spring.application.name}/auth.log
+  level:
+    ROOT: INFO
+    com.pst:
+      whee: DEBUG
+    org.springframework: 
+      data: INFO
+      web: INFO
+      security: INFO
