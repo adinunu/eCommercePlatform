@@ -187,17 +187,18 @@ public class MemberServiceImpl implements MemberService {
 		try {
 			secUser.setUsername(accountWrapper.getUsername());
 			secUser.setEnabled(accountWrapper.isEnabled());
-			secUser.setRole("ROLE_ACCOUNT");
+			secUser.setRole("ROLE_MEMBER");
 
 			User toSave = usersRepository.findOne(secUser.getUsername());
 			if (toSave == null) { // if new sec-user use jdbcUsersDetailManager to create user
-				authorities.add(new SimpleGrantedAuthority("ROLE_USER")); // user store is always ROLE_USER
-				org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
-						secUser.getUsername(), secUser.getPassword(), authorities);
-				jdbcUserDetailsManager.createUser(user);
+				authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER")); // user store is always ROLE_USER
 				if (accountWrapper.getPassword() != null && !Objects.equals(accountWrapper.getPassword(), "")) {
 					secUser.setPassword(encoder.encode(accountWrapper.getPassword()));
 				}
+				org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
+						secUser.getUsername(), secUser.getPassword(), authorities);
+				jdbcUserDetailsManager.createUser(user);
+				
 				usersRepository.save(secUser);
 			} else {
 				toSave.setUsername(secUser.getUsername());
@@ -210,13 +211,6 @@ public class MemberServiceImpl implements MemberService {
 			}
 
 			accountWrapper = toWrapper(accountRepository.save(toEntity(accountWrapper)));
-			if (accountWrapper.getId() != null) {
-				// 1. check if all default is exist, if not then create one
-				if (categoryService.getNumFilteredByAccount(accountWrapper.getId()) == 0) {
-					categoryService.createDefaultCategory(accountWrapper.getId());
-				}
-
-			}
 
 			return accountWrapper;
 		} catch (Exception e) {

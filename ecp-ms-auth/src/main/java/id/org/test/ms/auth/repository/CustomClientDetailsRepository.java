@@ -5,7 +5,7 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 
 import id.org.test.ms.auth.domain.CustomClientDetails;
 
-public interface WheeClientDetailsRepository
+public interface CustomClientDetailsRepository
 		extends JpaRepository<CustomClientDetails, Long>, QueryDslPredicateExecutor<CustomClientDetails> {
 	
 	CustomClientDetails findByClientId(String clientId);

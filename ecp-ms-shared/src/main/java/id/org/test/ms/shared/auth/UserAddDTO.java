@@ -9,8 +9,6 @@ public class UserAddDTO {
 	private String email;
 	private String mobile;
 	private String password;
-	private Long accountId;
-	private Long employeeId;
-	private Long storeId;
+	private Long memberId;
 
 }

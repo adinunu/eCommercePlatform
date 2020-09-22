@@ -47,9 +47,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired
-	private CustomUserDetailsManager wheeUserDetailsManager;
+	private CustomUserDetailsManager customUserDetailsManager;
 	@Autowired
-	private CustomClientDetailsService wheeClientDetailsService;
+	private CustomClientDetailsService customClientDetailsService;
 	@Autowired
 	@Qualifier("CustomTokenEnhancer")
 	private TokenEnhancer tokenEnhancer;
@@ -69,7 +69,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.withClientDetails(wheeClientDetailsService);
+		clients.withClientDetails(customClientDetailsService);
 //		clients.inMemory()
 //			.withClient("client")
 //			.authorizedGrantTypes("password", "refresh_token", "implicit", "authorization_code", "client_credentials")
@@ -82,8 +82,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		log.info("Configuring AuthorizationServerEndpoints");
 		endpoints
 			.authenticationManager(authenticationManager)
-			.userDetailsService(wheeUserDetailsManager)
-			.tokenStore(wheeTokenStore())
+			.userDetailsService(customUserDetailsManager)
+			.tokenStore(csutomTokenStore())
 			.tokenEnhancer(tokenEnhancerChain())
 			.reuseRefreshTokens(false) // this line made every refresh_token grant invoked, it will generate new refresh_token 
 			.exceptionTranslator(e -> {
@@ -129,9 +129,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Primary
 	public DefaultTokenServices tokenServices() {
 	    DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-	    defaultTokenServices.setTokenStore(wheeTokenStore());
+	    defaultTokenServices.setTokenStore(csutomTokenStore());
 	    defaultTokenServices.setSupportRefreshToken(true);
-//	    defaultTokenServices.setReuseRefreshToken(true); // somehow this has no effect, maybe its a bug 
 	    return defaultTokenServices;
 	}
 
@@ -140,9 +139,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		return new JdbcTokenStore(dataSource);
 	}
 	
-	 private TokenStore wheeTokenStore() {
+	 private TokenStore csutomTokenStore() {
 		 return jdbcTokenStore();
-//		 return new InMemoryTokenStore();
-//		 return new WheeTokenStore(wheeAccessTokenRepository, authenticationKeyGenerator());
 	 }
 }

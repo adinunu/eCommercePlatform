@@ -25,10 +25,10 @@ import id.org.test.common.constant.AppConstant;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
-	@Value("${security.oauth2.resource.id:whee-resource}")
+	@Value("${security.oauth2.resource.id:ecp-ms-auth-oauth-resource}")
 	private String oauthResourceId;
 	
-	@Value("${security.oauth2.resource.token-info-uri:http://localhost:19100/whee-ms-auth/oauth/check_token}")
+	@Value("${security.oauth2.resource.token-info-uri:http://localhost:19100/ecp-ms-auth/oauth/check_token}")
 	private String oauthTokenInfoUri;
 	
 	@Bean

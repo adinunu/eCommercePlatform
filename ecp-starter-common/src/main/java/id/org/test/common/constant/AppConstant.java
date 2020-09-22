@@ -16,8 +16,8 @@ public class AppConstant {
 	public static final class OAuthClientDetails {
 
 		public static final class MobileApi {
-			public static final String ID = "WheeMobileApi19";
-			public static final String SECRET = "Wh3eAr3Th3Ch4mPi0ns77";
+			public static final String ID = "ecpApp";
+			public static final String SECRET = "K1ngSton";
 			public static final int ACCESS_TOKEN_VALIDITY_SECONDS = 99 * 86400; // 99 days
 			public static final int REFRESH_TOKEN_VALIDITY_SECONDS = 99 * 86400; // 99 days
 

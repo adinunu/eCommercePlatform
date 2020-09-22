@@ -15,15 +15,15 @@ import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.stereotype.Service;
 
 import id.org.test.ms.auth.domain.CustomClientDetails;
-import id.org.test.ms.auth.repository.WheeClientDetailsRepository;
+import id.org.test.ms.auth.repository.CustomClientDetailsRepository;
 
 @Service
 public class CustomClientDetailsService implements ClientDetailsService, ClientRegistrationService {
 	
-	private WheeClientDetailsRepository clientDtlRepo;
+	private CustomClientDetailsRepository clientDtlRepo;
 	private PasswordEncoder passwordEncoder;
 	
-	public CustomClientDetailsService(	final WheeClientDetailsRepository clientDtlRepo,
+	public CustomClientDetailsService(	final CustomClientDetailsRepository clientDtlRepo,
 									final PasswordEncoder passwordEncoder) {
 		this.clientDtlRepo = clientDtlRepo;
 		this.passwordEncoder = passwordEncoder;

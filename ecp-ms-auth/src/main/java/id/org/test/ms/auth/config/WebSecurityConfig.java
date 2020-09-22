@@ -43,17 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         		"/oauth/token/revoke",
         		"/oauth/token/kick",
         		"/oauth/ping",
-        		"/oauth/list/paging/{page}/{size}",
-        		"/user/**",
-        		"/menu-role/**",
-        		"/menu-cluster/**",
-        		"/menu-cluster-member/**",
-        		"/role/**",
-        		"/menu/**",
-        		"/user-admin/**"
-//        		"/oauth/check_token",
-//        		"/user/register/**",
-//        		"/user/verify/**"
+        		"/user/**"
         		);
     }
 	
@@ -74,20 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		auth.userDetailsService(userDetailsService())
         	.passwordEncoder(passwordEncoder());
-
-//	        auth.inMemoryAuthentication()
-//	                .withUser("user")
-//	                    .password("password")
-//	                    .roles("USER")
-//	                    ;
-//	            .and()
-//	                .withUser("manager")
-//	                    .password("password")
-//	                    .credentialsExpired(true)
-//	                    .accountExpired(true)
-//	                    .accountLocked(true)
-//	                    .authorities("WRITE_PRIVILEGES", "READ_PRIVILEGES")
-//	                    .roles("MANAGER");
 	    		
 	}
 	 
@@ -99,13 +75,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
     public UserDetailsService userDetailsService() {
-		CustomUserDetailsManager wheeUserDtlsMgr = null;
+		CustomUserDetailsManager customUserDtlsMgr = null;
 		try {
-			wheeUserDtlsMgr = new CustomUserDetailsManager(userRepository, securityContextService, authenticationManagerBean());
+			customUserDtlsMgr = new CustomUserDetailsManager(userRepository, securityContextService, authenticationManagerBean());
 		} catch (Exception e) {
 			log.error("Failed creating bean UserDetailsService", e);
 		}
-    	return wheeUserDtlsMgr;
+    	return customUserDtlsMgr;
     }
 	
 	@Bean

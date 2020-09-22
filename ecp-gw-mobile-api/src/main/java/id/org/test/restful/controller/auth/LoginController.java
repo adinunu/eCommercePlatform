@@ -46,7 +46,7 @@ public class LoginController extends BaseController {
 		this.userRepository = userRepository;
 	}
 
-	@PostMapping("/api/auth/v2/login")
+	@PostMapping("/auth/login")
 	public Object loginV2(@RequestBody LoginDTO login, HttpServletResponse response) {
 		try {
 

@@ -10,18 +10,12 @@ import feign.Headers;
 import id.org.test.ms.shared.auth.UserAddDTO;
 import id.org.test.ms.shared.auth.UserDTO;
 import id.org.test.ms.shared.auth.UserRole;
-import id.org.test.ms.shared.auth.UserUpdPassDTO;
 
 public interface UserFeign {
 
 	@PostMapping("/user/add/account")
 	@Headers({ CONTENT_TYPE_JSON })
-	Object addUserAccount(@RequestBody UserAddDTO udto,
-			@RequestParam(name = "encpass", required = false) boolean encpass);
-
-	@PostMapping("/user/update/paswd")
-	@Headers({ CONTENT_TYPE_JSON })
-	Object updateUserPassword(@RequestBody UserUpdPassDTO udto,
+	Object addUserMember(@RequestBody UserAddDTO udto,
 			@RequestParam(name = "encpass", required = false) boolean encpass);
 
 	@PostMapping("/user/update/role")

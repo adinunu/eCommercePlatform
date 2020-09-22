@@ -30,10 +30,17 @@ ecp-ms-auth:
   path: /${ecp-ms-auth.name}
   ribbon:
     NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
-    listOfServers: http://127.0.0.1:19100
+    listOfServers: http://localhost:19100
 feign:
   hystrix:
     enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000    
 #Security
 security:
   basic:

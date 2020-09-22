@@ -28,20 +28,7 @@ import id.org.test.common.builder.JwtAccessTokenConverterBuilder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
-	public static final String ALLOWED_URL_WHITELIST[] = { "/account/validateBusinessName", 
-//															"/account/validateEmail",
-//															"/system/resetPassword", 
-															"/api/auth/login", 
-															"/api/auth/logout", 
-															"/province/**", 
-															"/api/area/provinsi/**", 
-//															"/health/**", 
-//															"/registration", 
-															"/api/version", 
-															"/api/signup/**",
-															"/api/signin/**"
-															,"/referral/**",
-															"/api/auth/v2/login"};
+	public static final String ALLOWED_URL_WHITELIST[] = { "/auth/login", "/auth/registers"};
 
 
 
