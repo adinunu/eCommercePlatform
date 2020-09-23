@@ -21,23 +21,22 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import id.org.test.common.builder.JwtAccessTokenConverterBuilder;
-
+import id.org.test.common.constant.AppConstant;
 
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-	
-	public static final String ALLOWED_URL_WHITELIST[] = { "/auth/login", "/auth/registers"};
 
+	public static final String ALLOWED_URL_WHITELIST[] = { "/auth/login", "/auth/registers", "/api/product/list",
+			"/api/product/{productId}" };
 
-
-	@Value("${security.oauth2.resource.id:whee-mapi-gw}")
+	@Value("${security.oauth2.resource.id:ecp-rest-gw}")
 	private String oauthResourceId;
-	
-	@Value("${security.oauth2.resource.token-info-uri:http://localhost:19100/whee-ms-auth/oauth/check_token}")
+
+	@Value("${security.oauth2.resource.token-info-uri:http://localhost:19100/ecp-ms-auth/oauth/check_token}")
 	private String oauthTokenInfoUri;
-	
+
 	@Bean
 	@Qualifier("JwtAccessTokenConverter")
 	public JwtAccessTokenConverter accessTokenConverter() {
@@ -50,40 +49,28 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	}
 
 	@Bean
-	@Primary // Making this primary to avoid any accidental duplication with another token service instance of the same name
+	@Primary
 	public ResourceServerTokenServices tokenServices() {
-		
+
 		RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
 		remoteTokenServices.setCheckTokenEndpointUrl(oauthTokenInfoUri);
-		remoteTokenServices.setClientId("client");
-		remoteTokenServices.setClientSecret("password");
+		remoteTokenServices.setClientId(AppConstant.OAuthClientDetails.MobileApi.ID);
+		remoteTokenServices.setClientSecret(AppConstant.OAuthClientDetails.MobileApi.SECRET);
 		remoteTokenServices.setAccessTokenConverter(accessTokenConverter());
 		return remoteTokenServices;
-		
-//		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-//		defaultTokenServices.setTokenStore(tokenStore());
-//		defaultTokenServices.setSupportRefreshToken(true);
-//		return defaultTokenServices;
+
 	}
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		resources
-			.tokenServices(tokenServices())
-			.resourceId(oauthResourceId);
+		resources.tokenServices(tokenServices()).resourceId(oauthResourceId);
 	}
-	
+
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http
-//		.cors().and()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().authorizeRequests()
-			.antMatchers(ALLOWED_URL_WHITELIST).permitAll()
-			.antMatchers(SWAGGER_URL_WHITELIST).permitAll()
-			.antMatchers(ACTUATOR_V1_URL_WHITELIST).permitAll()
-		.anyRequest().authenticated();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers(ALLOWED_URL_WHITELIST).permitAll().antMatchers(SWAGGER_URL_WHITELIST).permitAll()
+				.antMatchers(ACTUATOR_V1_URL_WHITELIST).permitAll().anyRequest().authenticated();
 	}
-	
-}
 
+}

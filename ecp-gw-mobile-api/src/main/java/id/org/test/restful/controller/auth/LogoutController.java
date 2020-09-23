@@ -21,7 +21,7 @@ public class LogoutController extends BaseController {
 		this.oauthFc = oauthFc;
 	}
 
-	@PostMapping("/api/auth/logout")
+	@PostMapping("/auth/logout")
 	public Object logout(@RequestParam("token") String token) {
 		
 		if(StringUtils.isNotEmpty(token)) {

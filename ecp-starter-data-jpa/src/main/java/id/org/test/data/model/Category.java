@@ -22,7 +22,7 @@ public class Category extends ReferenceBase {
 	private String categoryName;
 
 	@OneToOne
-	@JoinColumn(name = "ACCOUNT_ID", nullable = false)
-	private Member account;
+	@JoinColumn(name = "MEMBER_ID", nullable = false)
+	private Member member;
 
 }

@@ -55,7 +55,6 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 				String role = authorities.get(0).getAuthority();
 				tokenInfo.put(AppConstant.TokenInfo.ROLE, role);
 
-				// temporary solution for mobile api reading ROLE_ACCOUNT_PRO as ROLE_ACCOUNT
 				if (AppConstant.OAuthClientDetails.MobileApi.ID
 						.contentEquals(authentication.getOAuth2Request().getClientId())) {
 
@@ -66,13 +65,6 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 						List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
 						roles.add(new SimpleGrantedAuthority(AppConstant.UserRole.MEMBER));
 						tokenInfo.put(AppConstant.TokenInfo.AUTHORITIES, roles);
-//					}else if(role.equalsIgnoreCase(AppConstant.UserRole.ACCOUNT_TRIAL)){
-//						
-//						tokenInfo.put(AppConstant.TokenInfo.ROLE, AppConstant.UserRole.ACCOUNT_TRIAL);
-//						
-//						List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-//						roles.add(new SimpleGrantedAuthority(AppConstant.UserRole.ACCOUNT_TRIAL));
-//						tokenInfo.put(AppConstant.TokenInfo.AUTHORITIES, roles);
 					}
 
 				}

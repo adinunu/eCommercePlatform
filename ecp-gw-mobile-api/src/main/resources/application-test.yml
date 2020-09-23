@@ -44,27 +44,15 @@ hystrix:
 #Security
 security:
   basic:
-    realm: WheeHQ
+    realm: EcpHQ
   oauth2:
     resource:
-      id: whee-mapi-gw
-      token-info-uri: http://localhost:19100/whee-ms-auth/oauth/check_token
+      id: ecp-rest-gw
+      token-info-uri: http://localhost:19100/ecp-ms-auth/oauth/check_token
       filter-order: 3
 messages:
   path: ${spring.application.home}/conf/messages
 
-public:
-  account:
-    activation:
-      link: ${spring.app.baseUrl}/activate/public/activate
-change:
-  password:
-    link: ${spring.app.domain}/activate/change_password
-business:
-  app:
-    url:
-      protocol: ${spring.app.protocol}
-      baseUrl: ${spring.app.domain}/login
 #Token
 tokenExpirationTime: 120
 refreshTokenExpTime: 120

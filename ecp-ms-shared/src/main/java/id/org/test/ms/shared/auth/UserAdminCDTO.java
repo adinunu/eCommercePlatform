@@ -1,6 +1,5 @@
 package id.org.test.ms.shared.auth;
 
-import id.org.test.common.wrapper.ReferenceBaseWrapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

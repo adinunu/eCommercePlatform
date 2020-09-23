@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-// @EnableAutoConfiguration
-// @EnableTransactionManagement
-// @EnableJpaRepositories
 @EnableJpaAuditing(auditorAwareRef = "appAuditorAware", modifyOnCreate = false)
 public class AppConfiguration {
 

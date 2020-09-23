@@ -88,15 +88,6 @@ public class CustomOAuthController extends BaseController {
 		return buildResponse(ResponseStatus.LOGOUT_ALREADY, HttpStatus.OK);
 	}
 
-	/**
-	 * 
-	 * kindly handle following methods with care. Its been used to normalize
-	 * access_token for all of our applications
-	 * 
-	 * @param basicAuthorization
-	 * @param username
-	 * @return
-	 */
 	@PostMapping("/is-login")
 	public Object isLoggedIn(@RequestHeader("Authorization") String basicAuthorization,
 			@RequestParam("username") String username) {
@@ -126,19 +117,16 @@ public class CustomOAuthController extends BaseController {
 		log.debug("found {} access_token(s) for user={}, removing {} expired access_token(s) of {} total", accTokenSize,
 				username, accTokenRemoved, accTokenSize);
 
-		// all tokens after this line are not yet expired
 		String clientId = AppConstant.OAuthClientDetails.getClientId(basicAuthorization);
-		if (clientId.equalsIgnoreCase(AppConstant.OAuthClientDetails.MobileApi.ID)) { // user checking via mobileapi
+		if (clientId.equalsIgnoreCase(AppConstant.OAuthClientDetails.MobileApi.ID)) {
 
 			Collection<OAuth2AccessToken> mapitokens = tokenStore.findTokensByClientIdAndUserName(clientId, username);
-			if (mapitokens.size() > 1) { // if token found more than 1, its abnormal behavior, we should removed all
-											// those tokens
+			if (mapitokens.size() > 1) { 
 				for (OAuth2AccessToken mapitoken : mapitokens) {
 					tokenStore.removeAccessToken(mapitoken);
 					tokenStore.removeRefreshToken(mapitoken.getRefreshToken());
 				}
-//				return ok("User is not login in SmartDashboard");
-			} else if (mapitokens.size() == 1) { // this expected behavior, 1 token per user & clientId at a time
+			} else if (mapitokens.size() == 1) {
 				OAuth2AccessToken mapitoken = (OAuth2AccessToken) mapitokens.toArray()[0];
 				return mapitoken;
 			}
@@ -147,20 +135,6 @@ public class CustomOAuthController extends BaseController {
 
 		return buildResponse(ResponseStatus.LOGOUT_ALREADY, HttpStatus.OK);
 	}
-
-//	private boolean isLoginFromMobileAPI(String username) {
-//		int validToken = 0;
-//		Collection<OAuth2AccessToken> mapitokens = tokenStore.findTokensByClientIdAndUserName(AppConstant.OAuthClientDetails.MobileApi.ID, username);
-//		for (OAuth2AccessToken mapitoken : mapitokens) {
-//			if(mapitoken.isExpired()) {
-//				tokenStore.removeAccessToken(mapitoken);
-//				tokenStore.removeRefreshToken(mapitoken.getRefreshToken());
-//			} else {
-//				validToken++;
-//			}
-//		}
-//		return validToken > 0;
-//	}
 
 	@GetMapping("/ping")
 	public Object ping() {

@@ -1,7 +1,6 @@
 package id.org.test.ms.shared.mobile;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.Data;
 
@@ -16,5 +15,5 @@ public class CategoryVDTO implements Serializable {
 	private Long id;
 	private String categoryName;
 	private String description;
-	private Long accountId;
+	private Long memberId;
 }

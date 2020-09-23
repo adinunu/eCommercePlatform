@@ -18,11 +18,8 @@ import id.org.test.common.web.BaseController;
 import id.org.test.common.web.ResponseStatus;
 import id.org.test.data.model.Member;
 import id.org.test.data.repository.MemberRepository;
-import id.org.test.data.repository.UserRepository;
-import id.org.test.data.service.organization.MemberService;
 import id.org.test.ms.shared.auth.LoginDTO;
 import id.org.test.restful.feign.OAuthFeignClient;
-import id.org.test.restful.feign.UserFeignClient;
 
 @RestController
 public class LoginController extends BaseController {
@@ -32,22 +29,15 @@ public class LoginController extends BaseController {
 	private final OAuthFeignClient oauthFc;
 	private final MemberRepository accountRepository;
 	private ObjectMapper mapper;
-	private final MemberService accountService;
-	private final UserFeignClient userFeign;
-	private final UserRepository userRepository;
 
-	public LoginController(OAuthFeignClient oauthFc, MemberRepository accountRepository, MemberService accountService,
-			UserFeignClient userFeign, UserRepository userRepository) {
+	public LoginController(OAuthFeignClient oauthFc, MemberRepository accountRepository) {
 		this.oauthFc = oauthFc;
 		this.accountRepository = accountRepository;
 		this.mapper = new ObjectMapper();
-		this.accountService = accountService;
-		this.userFeign = userFeign;
-		this.userRepository = userRepository;
 	}
 
 	@PostMapping("/auth/login")
-	public Object loginV2(@RequestBody LoginDTO login, HttpServletResponse response) {
+	public Object login(@RequestBody LoginDTO login, HttpServletResponse response) {
 		try {
 
 			Object kickTokenObj = oauthFc.kickToken(AppConstant.OAuthClientDetails.MobileApi.buildBasicAuthorization(),
@@ -73,13 +63,6 @@ public class LoginController extends BaseController {
 
 				oauthMap.put("token", accToken);
 				oauthMap.put("refreshToken", refToken);
-
-//		        Cookie rfcCookie = new Cookie("timezoneCookie", "cookie");
-//		    	rfcCookie.setValue(Integer.toString(settingTimezone.getGmt()));
-//		    	rfcCookie.setPath("/signin");
-//		    	rfcCookie.setMaxAge(9999);
-//		    	response.addCookie(rfcCookie);
-
 				return oauthMap;
 
 			}

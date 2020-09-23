@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
 import id.org.test.common.base.ReferenceBase;
 import id.org.test.common.constant.GeneralStatus;
 import lombok.Data;
@@ -16,6 +18,7 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "product")
+@Where(clause = "IS_DELETED=false")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Product extends ReferenceBase {
@@ -24,36 +27,18 @@ public class Product extends ReferenceBase {
 	
 	@Column(name = "PRODUCT_NAME", length = 100, nullable = false)
 	private String productName;
+	
+	@Column(name = "PRODUCT_CODE", length = 100, nullable = false)
+	private String productCode;
 
-	@Column(name = "SKU", length = 30)
-	private String sku;
-
-	@Column(name = "DISPLAY_FLAG")
-	private Boolean displayFlag;
-
-	@Column(name = "IS_COMPOSITE")
-	private Boolean composite;
-
-	@Column(name = "HAS_VARIANT")
-	private Boolean hasVariant;
-
-	@Column(name = "VARIANT_NAME", length = 100)
-	private String variantOptionName;
-
-	@Column(name = "VARIANT_VALUE", length = 100)
-	private String variantOptionValue;
-
-	@Column(name = "PRODUCT_HANDLE", length = 100, nullable = false)
-	private String productHandle;
-
-	@Column(name = "BARCODE")
-	private String barcode;
-
-	@Column(name = "SUPPLIER_PRICE", length = 50)
-	private BigDecimal supplyPrice;
-
-	@Column(name = "RETAIL_PRICE", length = 50)
-	private BigDecimal retailPrice;
+	@Column(name = "PRODUCT_PRICE", length = 50)
+	private BigDecimal productPrice;
+	
+	@Column(name = "STORE_NAME", length = 100)
+	private String storeName;
+	
+	@Column(name = "BRAND_NAME", length = 100)
+	private String brandName;
 
 	@ManyToOne
 	@JoinColumn(name = "CATEGORY_ID", nullable = false)
@@ -63,14 +48,8 @@ public class Product extends ReferenceBase {
 	private GeneralStatus generalStatus;
 
 	@OneToOne
-	@JoinColumn(name = "ACCOUNT_ID", nullable = false)
-	private Member account;
-
-	@Column(name = "IMAGE", length = 500)
-	private String image;
-
-	@Column(name = "TRACK_INVENTORY_FLAG")
-	private Boolean trackInventoryFlag;
+	@JoinColumn(name = "MEMBER_ID", nullable = false)
+	private Member member;
 
 
 }

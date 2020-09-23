@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import id.org.test.common.web.BaseController;
 import id.org.test.common.web.ResponseStatus;
-import id.org.test.data.service.dto.RegisterDTO;
-import id.org.test.data.service.organization.MemberService;
-import id.org.test.data.service.organization.wrapper.MemberWrapper;
+import id.org.test.data.service.MemberService;
+import id.org.test.data.service.wrapper.MemberWrapper;
 import id.org.test.ms.shared.auth.UserAddDTO;
+import id.org.test.ms.shared.mobile.RegisterDTO;
 import id.org.test.restful.feign.OAuthFeignClient;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +54,7 @@ public class RegisterController extends BaseController {
 			Object createUser = oauthFC.addUserMember(userAddDTO, true);
 			if (createUser != null) {
 				try {
-						return buildResponse(ResponseStatus.USER_CREATED, HttpStatus.OK);
+					return buildResponse(ResponseStatus.USER_CREATED, HttpStatus.OK);
 				} catch (Exception e) {
 					log.error("Fail /register ", e.getMessage());
 				}

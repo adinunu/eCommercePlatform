@@ -50,11 +50,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		remoteTokenServices.setClientSecret("password");
 		remoteTokenServices.setAccessTokenConverter(accessTokenConverter());
 		return remoteTokenServices;
-		
-//		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-//		defaultTokenServices.setTokenStore(tokenStore());
-//		defaultTokenServices.setSupportRefreshToken(true);
-//		return defaultTokenServices;
 	}
 
 	@Override

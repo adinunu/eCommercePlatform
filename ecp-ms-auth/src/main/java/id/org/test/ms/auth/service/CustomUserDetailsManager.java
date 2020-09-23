@@ -91,7 +91,7 @@ public class CustomUserDetailsManager implements UserDetailsManager {
 	}
 	
 	private boolean loginAllowed(Collection<GrantedAuthority> authorities) {
-		log.debug("WheeUserDetailsManager.loginAllowed({})", authorities);
+		log.debug("UserDetailsManager.loginAllowed({})", authorities);
 		for(GrantedAuthority ga : authorities) {
 			String role = ga.getAuthority();
 			for (String arole : ALLOWED_ROLES) {
@@ -203,12 +203,10 @@ public class CustomUserDetailsManager implements UserDetailsManager {
 	public void changePassword(String oldPassword, String newPassword) {
 		final Authentication currentUser = securityContextService.getAuthentication();
 		if (isNull(currentUser)) {
-	        // This would indicate bad coding somewhere
 			throw new AccessDeniedException("Can't change password as no Authentication object found in context for current user.");
 		}
 		
 		final String username = currentUser.getName();
-		// If an authentication manager has been set, re-authenticate the user with the supplied password.
         if (nonNull(authenticationManager)) {
             log.debug("Reauthenticating user '{}' for password change request.", username);
 

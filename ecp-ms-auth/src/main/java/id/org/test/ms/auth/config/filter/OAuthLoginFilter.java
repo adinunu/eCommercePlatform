@@ -76,21 +76,6 @@ public class OAuthLoginFilter extends OncePerRequestFilter implements Ordered {
 						if(StringUtils.isNotEmpty(clientId)) {
 								
 							Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByUserName(username);
-//							Collection<OAuthAcccessToken> storedTokens = oauthAccTokenRepo.findByUserNameAndClientId(username, clientId);
-//							log.debug("TOKENS AVAILABLE >> {} x STORED {}", tokens.size(), storedTokens.size());
-//							Thread.currentThread().sleep(5000);
-//							for (OAuth2AccessToken accToken : tokens) {
-//								boolean expired = accToken.isExpired();
-//								if(expired) {
-//									tokenStore.removeAccessToken(accToken);
-//									tokenStore.removeRefreshToken(accToken.getRefreshToken());
-//								} else {
-//									response.setContentType("application/json");
-//									response.sendError(HttpStatus.UNAUTHORIZED.value(), ResponseStatus.USER_IS_LOGGED_IN.getMessage());
-//									return;
-//								}
-//							}
-								
 						}
 						
 					} catch (Exception e) {

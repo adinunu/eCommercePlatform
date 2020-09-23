@@ -7,11 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
-/**
- * 
- * @author salprima
- *
- */
 @Data
 @JsonInclude(Include.NON_NULL)
 public class LoginDTO implements Serializable {

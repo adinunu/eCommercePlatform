@@ -64,17 +64,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.allowFormAuthenticationForClients()
 			.tokenKeyAccess("permitAll()")
 			.checkTokenAccess("isAuthenticated()")
-			.passwordEncoder(passwordEncoder); // this is client's password encoder
+			.passwordEncoder(passwordEncoder);
 	}
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.withClientDetails(customClientDetailsService);
-//		clients.inMemory()
-//			.withClient("client")
-//			.authorizedGrantTypes("password", "refresh_token", "implicit", "authorization_code", "client_credentials")
-//			.secret("{bcrypt}$2a$11$.UkTiJCGL4AYCpxftuWmjumosFZZXjJonTMqGVERY7D9ey4CHNaZC") //<- plain text of this bcrypt = "password"
-//			.scopes("read", "write", "trust");
 	}
 	
 	@Override
@@ -85,7 +80,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.userDetailsService(customUserDetailsManager)
 			.tokenStore(csutomTokenStore())
 			.tokenEnhancer(tokenEnhancerChain())
-			.reuseRefreshTokens(false) // this line made every refresh_token grant invoked, it will generate new refresh_token 
+			.reuseRefreshTokens(false) 
 			.exceptionTranslator(e -> {
 	            if (e instanceof OAuth2Exception) {
 	                OAuth2Exception oAuth2Exception = (OAuth2Exception) e;

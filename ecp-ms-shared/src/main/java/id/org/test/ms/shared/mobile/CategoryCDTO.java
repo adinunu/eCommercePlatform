@@ -18,6 +18,6 @@ public class CategoryCDTO implements Serializable {
 	private String categoryName;
 	@ApiModelProperty(notes="Deskripsi Kategori" ,example="ini makanan")
 	private String description;
-	private Long accountId;
+	private Long memberId;
 	
 }

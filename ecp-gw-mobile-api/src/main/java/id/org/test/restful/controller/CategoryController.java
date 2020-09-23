@@ -33,10 +33,10 @@ import id.org.test.data.model.QCategory;
 import id.org.test.data.model.QProduct;
 import id.org.test.data.repository.CategoryRepository;
 import id.org.test.data.repository.ProductRepository;
-import id.org.test.data.service.inventory.CategoryService;
-import id.org.test.data.service.inventory.wrapper.CategoryWrapper;
-import id.org.test.data.service.organization.MemberService;
-import id.org.test.data.service.organization.wrapper.MemberWrapper;
+import id.org.test.data.service.CategoryService;
+import id.org.test.data.service.MemberService;
+import id.org.test.data.service.wrapper.CategoryWrapper;
+import id.org.test.data.service.wrapper.MemberWrapper;
 import id.org.test.ms.shared.mobile.CategoryCDTO;
 import id.org.test.ms.shared.mobile.CategoryVDTO;
 import id.org.test.restful.config.UserContext;
@@ -48,7 +48,7 @@ public class CategoryController extends BaseController {
 
 	private static final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
-	private MemberService accountService;
+	private MemberService memberService;
 	private CategoryMapper categoryMapper;
 	private CategoryRepository categoryRepository;
 	private CategoryService categoryService;
@@ -57,14 +57,14 @@ public class CategoryController extends BaseController {
 	
 	
 	public CategoryController(
-			MemberService accountService, 
+			MemberService memberService, 
 			CategoryMapper categoryMapper, 
 			CategoryRepository categoryRepository,
 			CategoryService categoryService, 
 			ProductRepository productRepository, 
 			TokenStore tokenStore) {
 
-		this.accountService = accountService;
+		this.memberService = memberService;
 		this.categoryMapper = categoryMapper;
 		this.categoryRepository = categoryRepository;
 		this.categoryService = categoryService;
@@ -81,13 +81,13 @@ public class CategoryController extends BaseController {
 		try {
 			for (GrantedAuthority role : user.getAuthorities()) {
 				if (role.toString().equals(MEMBER)) {
-					MemberWrapper accountWrapper = accountService.getByUser(user.getUsername());
-					dto.setAccountId(accountWrapper.getId());
+					MemberWrapper memberWrapper = memberService.getByUser(user.getUsername());
+					dto.setMemberId(memberWrapper.getId());
 				} 
 				break;
 			}
-			Category categoryDelete = categoryRepository.getByCategoryNameAndAccountIdDelete(dto.getCategoryName().trim(),
-					dto.getAccountId());
+			Category categoryDelete = categoryRepository.getByCategoryNameAndMemberIdDelete(dto.getCategoryName().trim(),
+					dto.getMemberId());
 			if (categoryDelete != null) {
 				Category oldData = categoryRepository.findOne(categoryDelete.getId());
 				oldData.setCategoryName(dto.getCategoryName());
@@ -97,8 +97,8 @@ public class CategoryController extends BaseController {
 				category = categoryMapper.convertToDto(categoryUpdate);
 				return buildResponseGeneralSuccess(category);
 			}
-			Category categoryNotDelete = categoryRepository.getByCategoryNameAndAccountId(dto.getCategoryName().trim(),
-					dto.getAccountId());
+			Category categoryNotDelete = categoryRepository.getByCategoryNameAndMemberId(dto.getCategoryName().trim(),
+					dto.getMemberId());
 			if (categoryNotDelete == null) {
 				saveAction = categoryRepository.save(categoryMapper.createEntity(dto));
 				category = categoryMapper.convertToDto(saveAction);
@@ -120,7 +120,7 @@ public class CategoryController extends BaseController {
 		try {
 			for (GrantedAuthority role : userCtx.getAuthorities()) {
 				if (role.toString().equals(MEMBER)) {
-					categoryWrapperList = categoryService.getListByAccount(userCtx.getMemberId());
+					categoryWrapperList = categoryService.getListByMember(userCtx.getMemberId());
 				}
 				break;
 			}
@@ -150,9 +150,9 @@ public class CategoryController extends BaseController {
 		try {
 			for (GrantedAuthority role : user.getAuthorities()) {
 				if (role.toString().equals(MEMBER)) {
-					Long accountId = accountService.getAccountId(user.getUsername());
+					Long memberId = memberService.getMemberId(user.getUsername());
 
-					predicate = predicate.and(QCategory.category.account.id.eq(accountId));
+					predicate = predicate.and(QCategory.category.member.id.eq(memberId));
 
 				}
 			}
@@ -189,8 +189,8 @@ public class CategoryController extends BaseController {
 			if (category == null) {
 				return buildResponseNotFound("Category not found");
 			}
-			Long accountId = accountService.getAccountId(user.getUsername());
-			predicate = predicate.and(QCategory.category.account.id.eq(accountId));
+			Long memberId = memberService.getMemberId(user.getUsername());
+			predicate = predicate.and(QCategory.category.member.id.eq(memberId));
 			predicate = predicate.and(QCategory.category.deleted.eq(BOOLEAN_FALSE));
 			category.setVersion(category.getVersion() + 1);
 			category.setDeleted(1);
@@ -214,8 +214,8 @@ public class CategoryController extends BaseController {
 		try {
 			for (GrantedAuthority role : user.getAuthorities()) {
 				if (role.toString().equals(MEMBER)) {
-					MemberWrapper accountWrapper = accountService.getByUser(user.getUsername());
-					dto.setAccountId(accountWrapper.getId());
+					MemberWrapper memberWrapper = memberService.getByUser(user.getUsername());
+					dto.setMemberId(memberWrapper.getId());
 				}
 				break;
 			}
@@ -231,13 +231,13 @@ public class CategoryController extends BaseController {
 			oldData.setDescription(dto.getDescription());
 			
 			predicate = predicate.and(QCategory.category.categoryName.equalsIgnoreCase(dto.getCategoryName().trim()));
-			predicate = predicate.and(QCategory.category.account.id.eq(dto.getAccountId()));
+			predicate = predicate.and(QCategory.category.member.id.eq(dto.getMemberId()));
 			Iterable<Category> categories = categoryRepository.findAll(predicate);
 			Category categoriExist = new Category();
 			for (Category categori : categories) {
 				categoriExist = categori;
 			}
-			if (categoriExist.getAccount() == null) {
+			if (categoriExist.getMember() == null) {
 				saveAction = categoryRepository.save(oldData);
 				category = categoryMapper.convertToDto(saveAction);
 			} else {

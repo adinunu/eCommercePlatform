@@ -3,7 +3,6 @@ package id.org.test.ms.auth.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,13 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import id.org.test.common.constant.AppConstant;
 import id.org.test.common.web.DataTableObject;
 import id.org.test.ms.auth.domain.QUser;
 import id.org.test.ms.auth.domain.User;
 import id.org.test.ms.auth.repository.UserRepository;
-import id.org.test.ms.shared.auth.LoggedUserWrapper;
-import id.org.test.ms.shared.auth.UserAdminDTO;
 import id.org.test.ms.shared.auth.UserSecurityWrapper;
 import id.org.test.ms.shared.auth.service.UserService;
 
@@ -66,15 +60,6 @@ public class UserServiceImpl implements UserService {
 		UserSecurityWrapper wrapper = new UserSecurityWrapper();
 		wrapper.setUsername(user.getUsername());
 		wrapper.setEnabled(user.isEnabled());
-		return wrapper;
-	}
-
-	private LoggedUserWrapper toLoggedUserWrapper(User model) {
-		LoggedUserWrapper wrapper = new LoggedUserWrapper();
-		if (model != null) {
-			wrapper.setUsername(model.getUsername());
-			wrapper.setRole(model.getRole());
-		}
 		return wrapper;
 	}
 
@@ -135,11 +120,6 @@ public class UserServiceImpl implements UserService {
 		if (null != user)
 			return user.getRole();
 		return null;
-	}
-
-	@Override
-	public LoggedUserWrapper getByUsername(String username) {
-		return toLoggedUserWrapper(usersRepository.findByUsername(username).get());
 	}
 
 }

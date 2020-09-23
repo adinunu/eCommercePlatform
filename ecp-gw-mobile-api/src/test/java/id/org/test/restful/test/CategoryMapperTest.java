@@ -19,11 +19,11 @@ public class CategoryMapperTest {
 		
 //		Category category = mapper.map(cdto, Category.class);
 		
-		Member account = new Member();
-		account.setId(100l);
+		Member member = new Member();
+		member.setId(100l);
 		
 		Category category = new Category();
-		category.setAccount(account);
+		category.setMember(member);
 //		category.setCategoryName(cdto.getCategoryName());
 //		category.setDescription(cdto.getDescription());
 		System.out.println(category.toString());

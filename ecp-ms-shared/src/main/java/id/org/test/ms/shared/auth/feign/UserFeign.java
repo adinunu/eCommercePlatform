@@ -13,7 +13,7 @@ import id.org.test.ms.shared.auth.UserRole;
 
 public interface UserFeign {
 
-	@PostMapping("/user/add/account")
+	@PostMapping("/user/add/member")
 	@Headers({ CONTENT_TYPE_JSON })
 	Object addUserMember(@RequestBody UserAddDTO udto,
 			@RequestParam(name = "encpass", required = false) boolean encpass);
